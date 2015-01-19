@@ -327,27 +327,29 @@ plot_state <- function (symbol, hm_model, directory = "data/predict", period = c
     #return(sim_set)
     
     #####
-    data_plot = sim_set
-    data_plot = data_plot[ order(-data_plot$prob, data_plot$seed, data_plot$date), ] # sort plot order
-    plot = ggplot(data=data_plot,
-                  aes(x=date, y=price, colour=prob, group=seed, size=prob )) +
-        geom_point() + 
-        geom_smooth(method = "loess", se=F) +
-        scale_colour_gradient2(low="white", high="blue") + 
-        theme(
-            panel.background=element_rect(fill=160), 
-            panel.grid.minor = element_line(colour="white", size=0.1),
-            panel.grid.major = element_line(colour="white", size=0.3)
-        )
-    # geom_line(linetype="dotted") +  
-    # scale_colour_gradient2(low="white", high=muted("green"), mid="blue", midpoint=0.2) +
-    
-    print(plot)
-    return (data_plot)
+    if (mode == 'dev') {
+        data_plot = sim_set
+        data_plot = data_plot[ order(-data_plot$prob, data_plot$seed, data_plot$date), ] # sort plot order
+        plot = ggplot(data=data_plot,
+                      aes(x=date, y=price, colour=prob, group=seed, size=prob )) +
+            geom_point() + 
+            geom_smooth(method = "loess", se=F) +
+            scale_colour_gradient2(low="white", high="blue") + 
+            theme(
+                panel.background=element_rect(fill=160), 
+                panel.grid.minor = element_line(colour="white", size=0.1),
+                panel.grid.major = element_line(colour="white", size=0.3)
+            )
+        # geom_line(linetype="dotted") +  
+        # scale_colour_gradient2(low="white", high=muted("green"), mid="blue", midpoint=0.2) +
+        
+        print(plot)
+        return (data_plot)
+    }
     #######
     
     # plot last 60 days
-    data_plot = tail(data_predict, n=30)
+    data_plot = tail(data_predict, n=3000)
     
     # create space for predict data
     empty = data.frame(close=rep(NA, times=n_sim), state=rep(NA, times=n_sim))
@@ -356,7 +358,7 @@ plot_state <- function (symbol, hm_model, directory = "data/predict", period = c
     #print(empty)
     #return(data_plot)
     
-    plot(data_plot[,1], type="l")
+    plot(data_plot[,1], type="l", main = paste("Plot", symbol, "states") )
     #chartSeries(data_predict[,1])
     for (state in 1:n_state) {
         plot_state = data_plot
