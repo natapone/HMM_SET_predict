@@ -37,10 +37,10 @@ sim <- function (hm_model, last_state, n_sim, rand_num = 100, forecast_dates=NUL
         state_combo = rbind(state_combo,simul$states)
     }
     
-    message("count all states combination: ", nrow(state_combo))
+#     message("count all states combination: ", nrow(state_combo))
     
     state_combo = unique.data.frame(state_combo)
-    message("count unique states combination: ", nrow(state_combo))
+#     message("coCunt unique states combination: ", nrow(state_combo))
     
 #     for (r in 1:nrow(ss)) {
 #         print(ss[r,])
@@ -49,7 +49,7 @@ sim <- function (hm_model, last_state, n_sim, rand_num = 100, forecast_dates=NUL
     # -------------
     for (r in 1:nrow(state_combo)) {
         simul_states = state_combo[r,]
-        message("Seed = ", r)
+#         message("Seed = ", r)
         print(simul_states)
 #     for (r in 1:rand_num) {
 #         set.seed(r)
@@ -111,16 +111,16 @@ sim <- function (hm_model, last_state, n_sim, rand_num = 100, forecast_dates=NUL
                 predict_set = rbind(predict_set, predict_prices)
             }
         }
-        message("---------")
+#         message("---------")
     }
     
     # filter low probability
     limit_prob = median(predict_set$probability)
-    message(" - median probability", limit_prob)
+#     message(" - median probability", limit_prob)
     
-    message(" - count all probability = ", nrow(predict_set))
+#     message(" - count all probability = ", nrow(predict_set))
     predict_set = predict_set[predict_set$probability > limit_prob, ]
-    message(" - count plot probability = ", nrow(predict_set))
+#     message(" - count plot probability = ", nrow(predict_set))
     
     #colnames(predict_set) = c(1:rand_num)
     
@@ -172,14 +172,14 @@ plot_forecast <- function (symbol, hm_model, directory = "data/predict", period 
         data_test   = head(data_test, n=( nrow(data_test) - n_day_forecast ))
 #         data_test[1:]
         
-        message("tail data_test")
+#         message("tail data_test")
         print(tail(data_test))
-        message("data_actual")
+#         message("data_actual")
         print(data_actual)
     }
     
     data_forecast = do_forecast(data_test, hm_model)
-    message("tail data forecast")
+#     message("tail data forecast")
     print(tail(data_forecast))
 
     # Simulation

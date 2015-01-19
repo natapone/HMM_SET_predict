@@ -1,0 +1,43 @@
+---
+title: "Hidden Markov Models SET prediction"
+author: "npc"
+output:
+  html_document:
+    keep_md: yes
+---
+
+```{r, include=F}
+source("set_hmm.R")
+```
+## Train general model 
+from SET, SET50 and SET 100
+```{r, include=F}
+m = train_hmm(n_state = 5)
+```
+HMM states mean
+```{r, echo=F}
+print(m$HMM)
+```
+
+## States plot
+Estimate price states from Hidden Markov model distribution.
+```{r, fig.width=12, fig.height=8, echo=F, results="hide", warning=F}
+plot_state("SET", m, n_state = 5)
+```
+
+Apply states from general model to DTAC
+```{r, fig.width=12, fig.height=8, echo=F, results="hide", warning=F}
+plot_state("DTAC", m, n_state = 5)
+```
+
+## Simulate SET future price based on general model
+Lines color and size represent probability weight.
+Dark brown is hightest, white is lowest.
+Green line is actual price.
+```{r, fig.width=12, fig.height=8, echo=F, results="hide", warning=F}
+data_plot = plot_forecast("SET", m, mode = "demo", n_day_forecast=10)
+data_plot = plot_forecast("DTAC", m, mode = "demo", n_day_forecast=10)
+data_plot = plot_forecast("ADVANC", m, mode = "demo", n_day_forecast=10)
+data_plot = plot_forecast("PTT", m, mode = "demo", n_day_forecast=10)
+data_plot = plot_forecast("CPALL", m, mode = "demo", n_day_forecast=10)
+```
